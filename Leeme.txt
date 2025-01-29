@@ -1,0 +1,76 @@
+Proyecto PHP Puro
+
+🔥 PHP Versión 8.2.12 y PostgreSQL Versión 16.3 🔥
+
+Este documento proporciona una guía paso a paso para configurar y ejecutar un proyecto PHP puro utilizando XAMPP y PostgreSQL como base de datos.
+
+Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu sistema:
+
+XAMPP (Apache y PHP)
+
+PostgreSQL
+
+pgAdmin (Opcional, para administrar la base de datos visualmente)
+
+Extensión pdo_pgsql habilitada en PHP
+
+Configuración del Entorno
+
+1. Habilitar PostgreSQL en PHP
+
+Por defecto, XAMPP no viene con PostgreSQL activado. Para habilitarlo:
+
+Ve al directorio de instalación de XAMPP (C:\xampp\php o /opt/lampp/etc en Linux).
+
+Abre el archivo php.ini con un editor de texto.
+
+Busca las siguientes líneas y descoméntalas (elimina ; al inicio si lo tienen):
+
+extension=pdo_pgsql
+extension=pgsql
+
+Guarda los cambios y reinicia Apache desde el panel de control de XAMPP.
+
+2. Crear la Base de Datos en PostgreSQL
+
+Abre pgAdmin o usa psql.
+
+Crea una nueva base de datos con el siguiente comando:
+
+CREATE DATABASE nombre_base_datos;
+
+3. Configurar la Conexión en PHP
+
+En el archivo config.php que esta en el directorio raíz del proyecto, cambia las credenciales:
+
+<?php
+$host = "localhost";
+$dbname = "nombre_base_datos";
+$user = "usuario_contraseña";
+$password = "tu_contraseña";
+
+try {
+    $pdo = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+    echo "Conexión exitosa a PostgreSQL.";
+} catch (PDOException $e) {
+    die("Error de conexión: " . $e->getMessage());
+}
+?>
+
+4. Iniciar el Servidor Apache con XAMPP
+
+Abre el panel de XAMPP.
+
+Inicia el servicio Apache.
+
+Accede a http://localhost/nombre_proyecto/ desde tu navegador.
+
+5. Ejecutar el Proyecto
+
+Coloca los archivos PHP en la carpeta htdocs de XAMPP (C:\xampp\htdocs\nombre_proyecto en Windows o /opt/lampp/htdocs/nombre_proyecto en Linux).
+
+Para probar la conexión a la base de datos, accede a http://localhost/nombre_proyecto/config.php.
